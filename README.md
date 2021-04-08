@@ -1,70 +1,53 @@
-# Getting Started with Create React App
+# Demo React Context
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Beschrijving
+Een context aanmaken voor een click-counter is natuurlijk alsof je een tosti doorsnijdt met een kettingzaag. Probeer je daarom voor te stellen dat dit een veel ingewikkeldere applicatie zou zijn, en dat we daarom Context gaan implementeren.
 
-## Available Scripts
+Er komen drie componenten in deze applicatie die allemaal toegang moeten hebben tot dezelfde data:
+1. Button component die de count _verhoogt_
+2. Button component die de count _verlaagt_
+3. Result component die de count laat zien
 
-In the project directory, you can run:
+## Stappen en bijbehorende branches
 
-### `npm start`
+De volgende stappen worden in de verschillende branches doorlopen:
+1. Aanmaken van de componenten en deze weergeven binnen het `<App>` component
+2. `CounterContext` aanmaken (met de `createContext` functie, in een bestandje genaamd `CounterContext.js`
+3. `CounterContext.Provider` maken en deze omwikkelen omde elementen op het hoogste niveau. Normaliter doen we dat in `index.js`, maar voor nu in `App.js` omdat we (voor nu) ook nog andere dingen nodig hebben.
+4. Een data object maken die via de Provider de context in gaat
+5. Consumerende componenten "abonneren" op de CounterContext met de `useContext` functie
+6. Een apart functioneel component maken van de `CounterContext.Provider` (genaamd `CounterContextProvider`), zodat we alle logcia en state daarin kunnen plaatsen en onze `App.js` zich bezig kan houden met zijn eigen zaken. Deze ontvangt dan de property `children` zodat we dit component nog steeds om andere componenten heen kunnen wrappen, net als een button (zie voorbeeld hieronder). We plaatsen dit component daarom in `index.js` om het`<App />` component heen.
+7. Nu kunnen we los met de data! We maken in het `<CounterContextProvider>` state aan voor de count, en twee aparte functies die de count kunnen verhogen en verlagen. Deze plaatsen we via de  `CounterContext.Provider` in de context.
+8. Nu kunnen we onze buttons ook abonneren om de context door de bijbehorende functie te gebruiken.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Uitleg property "children"
+Een gewone button ziet er zo uit:
+```javascript
+<button type="button">
+  Klik mij!
+</button>
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Wanneer we een component van deze button maken, maar we willen nog steeds ons component op dezelfde manier om tekst (of andere elementen) heen kunnen plaatsen, gebruik je de `children` prop:
 
-### `npm test`
+```javascript
+function ButtonComponent({ children }) {
+  return (
+    <button type="button">
+      {children}
+    </button>
+  )
+}
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Door die property kunnen we ons ButtonComponent nu op dezelfde manier om andere tekst heen wrappen:
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+// in App.js (of ergens anders):
+```javascript
+<ButtonComponent>
+  Klik mij!
+</ButtonComponent>
+<ButtonComponent>
+  Mij ook!
+</ButtonComponent>
+```
