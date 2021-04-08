@@ -6,8 +6,12 @@ import { CounterContext } from './context/CounterContext';
 import './App.css';
 
 function App() {
+  const data = {
+    count: 0,
+  }
+
   return (
-    <CounterContext.Provider>
+    <CounterContext.Provider value={data}>
       <Result/>
       <DecrementButton/>
       <IncrementButton/>
