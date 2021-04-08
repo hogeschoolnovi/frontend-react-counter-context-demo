@@ -1,9 +1,16 @@
 import React from 'react';
+import Result from './components/Result';
+import DecrementButton from './components/DecrementButton';
+import IncrementButton from './components/IncrementButton';
 import './App.css';
 
 function App() {
   return (
-    <div>Hier komt onze app!</div>
+    <>
+      <Result/>
+      <DecrementButton/>
+      <IncrementButton/>
+    </>
   );
 }
 
